@@ -1,0 +1,28 @@
+# Only the site itself is pushed: *.html, css/, js/, assets/, .nojekyll, README.md
+
+# Design source (not used by the live site; keep it local)
+design/
+
+# Windows / OneDrive
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+*.lnk
+~$*
+
+# macOS
+.DS_Store
+._*
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local tooling and logs
+.claude/
+node_modules/
+__pycache__/
+*.log
