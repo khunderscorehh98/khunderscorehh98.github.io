@@ -90,11 +90,14 @@
     });
   });
 
-  /* ---------- Contact form: client-side validation only ---------- */
+  /* ---------- Contact form: validate, then send via FormSubmit's AJAX endpoint ---------- */
+  // Without JS the form still works as a plain POST to FormSubmit (it then shows its own pages).
   var form = document.getElementById('contact-form');
   var formStatus = document.getElementById('form-status');
+  var FALLBACK = 'Please email haziqimac@gmail.com instead.';
 
   if (form) form.addEventListener('submit', function (e) {
+    e.preventDefault();
     var fields = form.querySelectorAll('.form-control');
     var firstInvalid = null;
     fields.forEach(function (field) {
@@ -104,18 +107,46 @@
     });
 
     if (firstInvalid) {
-      e.preventDefault();
-      formStatus.textContent = 'Please fix the highlighted fields.';
+      setStatus('Please fix the highlighted fields.', 'error');
       firstInvalid.focus();
       return;
     }
 
-    // Until a real endpoint is set, don't post to a placeholder URL.
-    if (form.getAttribute('action').indexOf('[FORM_ENDPOINT]') !== -1) {
-      e.preventDefault();
-      formStatus.textContent = 'The form is not connected yet. Please email haziqimac@gmail.com instead.';
-    }
+    var button = form.querySelector('[type="submit"]');
+    var data = {};
+    new FormData(form).forEach(function (value, key) { data[key] = value; });
+
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    setStatus('Sending your message…', '');
+
+    fetch(form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(function (res) { return res.json().then(function (json) { return { ok: res.ok, json: json }; }); })
+      .then(function (r) {
+        if (r.ok && String(r.json.success) === 'true') {
+          form.reset();
+          setStatus('Thanks, your message has been sent. I’ll reply by email.', 'success');
+        } else {
+          setStatus('Sorry, the message couldn’t be sent' + (r.json.message ? ' (' + r.json.message + ')' : '') + '. ' + FALLBACK, 'error');
+        }
+      })
+      .catch(function () {
+        setStatus('Sorry, the message couldn’t be sent. ' + FALLBACK, 'error');
+      })
+      .then(function () {
+        button.disabled = false;
+        button.textContent = 'Send message';
+      });
   });
+
+  function setStatus(text, kind) {
+    formStatus.textContent = text;
+    formStatus.className = 'form-status' + (kind ? ' is-' + kind : '');
+  }
 
   if (form) form.addEventListener('input', function (e) {
     var field = e.target;

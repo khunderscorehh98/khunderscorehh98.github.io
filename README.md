@@ -96,7 +96,11 @@ The hero intro has two versions that follow the "Read me as" toggle: `<p class="
 ### Contact (`contact.html`)
 
 - **GitHub / LinkedIn:** the two link rows point to `https://github.com/khunderscorehh98` and `https://www.linkedin.com/in/haziq-halidi/`; edit the `href` to change them.
-- **Message form:** GitHub Pages can't receive form posts, so the form needs a form-handling service that gives you a POST address (Formspree, Getform, Basin and similar). Replace `[FORM_ENDPOINT]` in `<form ... action="[FORM_ENDPOINT]">` with that address. The fields are sent as `name`, `email` and `message`. Until it's replaced, the form checks the fields and then asks visitors to email you instead of sending.
+- **Message form:** messages are sent through [FormSubmit](https://formsubmit.co/), which emails them to the address in the form's `action` (`https://formsubmit.co/haziqimac@gmail.com`).
+  - **First use:** after the site is live, send yourself one test message. FormSubmit replies with an activation email; click the link in it. Messages sent before activation are not delivered, and the form shows "This form needs Activation" in its error message.
+  - **Hide your address (optional):** the activation email also gives you a random alias. Replace `haziqimac@gmail.com` in the `action` with that alias.
+  - **How it sends:** with JavaScript on, `js/main.js` checks the fields and posts them to FormSubmit's `/ajax/` address, so visitors stay on the page and see a success or error note. Without JavaScript, it's a plain form post and FormSubmit shows its own pages.
+  - **Hidden fields:** `_subject` (the email subject), `_template` (`table` layout) and `_honey` (a spam trap; messages that fill it in are dropped).
 
 ## Styling
 

@@ -83,7 +83,17 @@
           </div>
 
           <div class="col-lg-6 reveal">
-            <form class="contact-form" id="contact-form" action="[FORM_ENDPOINT]" method="POST" novalidate>
+            <!-- FormSubmit (formsubmit.co) emails each message to the address in the action URL.
+                 After the first message, confirm via the activation email FormSubmit sends.
+                 Optional: swap the email in the URL for the random alias that email gives you. -->
+            <form class="contact-form" id="contact-form" action="https://formsubmit.co/haziqimac@gmail.com" method="POST" novalidate>
+              <input type="hidden" name="_subject" value="New message from your portfolio">
+              <input type="hidden" name="_template" value="table">
+              <!-- Spam trap: hidden from people, bots fill it in and FormSubmit drops the message -->
+              <div class="form-trap" aria-hidden="true">
+                <label for="cf-honey">Leave this empty</label>
+                <input type="text" id="cf-honey" name="_honey" tabindex="-1" autocomplete="off">
+              </div>
               <h2 class="form-title">Send a message</h2>
               <div class="field">
                 <label class="form-label" for="cf-name">Name</label>

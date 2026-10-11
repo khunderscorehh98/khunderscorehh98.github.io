@@ -400,7 +400,8 @@ main:focus { outline: none; }
 .portrait:not(.is-missing) figcaption {
   left: 0; right: 0; bottom: 0;
   padding: 32px 14px 12px;
-  background: linear-gradient(transparent, rgba(1, 7, 54, .85));
+  /* Reaches ~92% Midnight behind the text line, so saffron stays above 7:1 even over a white photo */
+  background: linear-gradient(rgba(1, 7, 54, 0), rgba(1, 7, 54, .92) 55%);
 }
 .portrait:not(.is-missing) .portrait-file { display: none; }
 
@@ -768,6 +769,12 @@ html[data-bs-theme="dark"] .on-navy { background: #0D1C42; }
 
 .form-status { font-size: 15px; margin: 14px 0 0; }
 .form-status:empty { display: none; }
+.form-status.is-success { color: var(--c-saffron); font-weight: 500; }
+.form-status.is-error { color: #FFB4A8; }
+.btn-saffron:disabled { opacity: .7; cursor: progress; }
+
+/* Honeypot field for FormSubmit's spam filter */
+.form-trap { display: none; }
 
 .site-footer { border-top: 1px solid var(--c-border); }
 .footer-inner {
